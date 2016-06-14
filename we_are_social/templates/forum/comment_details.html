@@ -1,0 +1,24 @@
+{% load thread_extras %}
+<div class="details">
+    <div class="col-md-6">
+        <div class="pull-left">
+            <time datetime="{{ post.created_at }}">
+                    <p>Posted: {{ post.created_at | started_time }}</p>
+            </time>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="pull-right">
+            <!-- If user is the post owner or staff they can then edit/delete the post -->
+            {% if post.user == user or user.is_staff %}
+                <a href="{% url 'edit_post' thread.id post.id %}">
+                    <i class="fa fa-pencil-square-o"></i>
+                </a>
+                <a href="{% url 'delete_post' post.id %}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="clearfix"></div>
+</div>

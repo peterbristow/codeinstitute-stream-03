@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Thanks for buying my item :)</h1>
+
+    {% if payment_status == 'Completed' %}
+        <p>Your payment of &pound;{{ mc_gross }} was successfully paid to {{ receiver_email }}.</p>
+        <p>You have now purchased {{ item_name }}</p>
+    {% endif %}
+
+    <h2>POST</h2>
+    {{ post }}
+
+    <h2>GET</h2>
+    {{ get }}
+{% endblock %}

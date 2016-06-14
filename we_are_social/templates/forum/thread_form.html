@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load bootstrap_tags %}
+{% load staticfiles %}
+
+{% block head_js %}
+    <script type="text/javascript" src="{% static 'js/tinymce/tinymce.min.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="application/javascript">
+        tinyMCE.init({mode: "textareas", theme: 'modern', plugins: 'paste'})
+
+    </script>
+{% endblock %}
+
+{% block content %}
+    <section>
+        <div class="col-md-9">
+            <form method="post" action="{% url 'new_thread' subject.id %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ thread_form | as_bootstrap }}
+                    <hr>
+                    {{ post_form | as_bootstrap }}
+                </div>
+                <div id="poll_form" class="form-group">
+                    {{ poll_form | as_bootstrap }}
+                    {{ poll_subject_formset.management_form }}
+                    <!-- Display by looping through the formset of 3 forms -->
+                    {% for poll_subject_form in poll_subject_formset %}
+                        {{ poll_subject_form | as_bootstrap }}
+                    {% endfor %}
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-primary"> Post New Thread</button>
+                </div>
+            </form>
+        </div>
+    </section>
+    <!-- Use JQuery to hide certain fileds -->
+    <script>
+    $(function() {
+        // Is is_a_poll checkbox checked?
+        if (!$('#id_is_a_poll').is('checked')) {
+            $('#poll_form').hide()
+        }
+        // If checkbox is hidden, watch for the click event and then show/hide it.
+        $('#id_is_a_poll').click(function(el) {
+            var poll_form = $('#poll_form')
+            if (poll_form.is(":visible")) {
+                poll_form.hide()
+            } else {
+                poll_form.show()
+            }
+        })
+    })
+    </script>
+{% endblock %}

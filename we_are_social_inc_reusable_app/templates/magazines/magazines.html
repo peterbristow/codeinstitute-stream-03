@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load magazine_extras %}
+
+{% block content %}
+    <table class="table table-striped"> <!-- bootstrap classes -->
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Purchase</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for magazine in magazines %}
+                <tr>
+                    <td>{{ magazine.name }}</td>
+                    <td>{{ magazine.description }}</td>
+                    <td>${{ magazine.price }}</td>
+                    <!-- Paypal Buy Now button. -->
+                    <!-- paypal_form_for template tag is defined in magazines/templatetags/magazine_extras.py -->
+                    <td>{% paypal_form_for magazine user %}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
